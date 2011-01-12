@@ -1,0 +1,324 @@
+" vimrc
+" author: Joe Bowman (based off of .vimrc from curt micol)
+
+" A must for all VIM's
+set nocompatible
+
+" some visuals
+set ruler
+set title
+set showcmd
+
+" statusline
+set laststatus=2
+set ch=1
+
+set ffs=unix,dos,mac
+set history=1000
+set visualbell
+
+set autoindent
+set smartindent
+set scrolloff=3
+
+" search
+set hlsearch
+set showmatch
+set incsearch
+set ignorecase
+
+" whitespace
+set tabstop=8
+set shiftwidth=4
+set softtabstop=4
+set showtabline=2
+set expandtab
+
+" text width
+set linebreak
+set textwidth=78
+
+" backspace across lines and indents
+set backspace=indent,eol,start
+
+" allow us to move across lines
+set whichwrap+=<,>,[,],h,l
+
+" hide the mouse while typing
+set mousehide
+if has('mouse')
+    set mouse=a
+endif
+
+" Turn off formatting when pasting
+set pastetoggle=<F6>
+
+" match angle brackets
+set matchpairs+=<:>
+
+" backups
+set backupdir=~/tmp/sessions
+set backupcopy=yes
+set backupskip=/tmp/*,$TMPDIR/*,$TMP/*,$TEMP/*
+set directory=~/tmp/swap//,.,~/tmp,/tmp
+
+" tab completion
+set wildmenu
+set wildmode=list:longest,list:full
+set wildignore+=*.o,*.obj,.git,*.rbc,*.pyc,.DS_Store,*.jpg,*.png,*.gif
+set wildmode=list:full
+
+
+" leader
+let mapleader = ","
+let g:mapleader = ","
+let maplocalleader = "\\"
+
+" NERDTree
+let NERDTreeIgnore=['\.rbc$', '\~$', '\.pyc$']
+map <leader>d :NERDTreeToggle<CR>
+
+" Command-T configuration
+let g:CommandTMaxHeight=20
+map <leader>t :CommandT<CR>
+
+" ZoomWin configuration
+map <Leader>z :ZoomWin<CR>
+
+" CTags
+map <Leader>rt :!ctags --extra=+f -R *<CR><CR>
+
+" gist
+let g:gist_clip_command = 'pbcopy'
+let g:gist_detect_filetype = 1
+let g:gist_open_browser_after_post = 1
+
+" manpages
+let $MANPAGER = '/usr/bin/less -is'
+
+" toggle line numbers
+map <leader>n :set number<CR>
+map <leader>N :set nonumber<CR>
+
+" open vimrc in a split window
+map <leader>v :call EditBothVimrc()<CR>
+
+function! EditBothVimrc()
+    execute ':tabe ~/.gvimrc'
+    execute ':split ~/.vimrc'
+endfunction
+
+if has("autocmd")
+    augroup vimrchooks
+        au!
+        autocmd bufwritepost .vimrc source ~/.vimrc
+        autocmd bufwritepost .gvimrc source ~/.gvimrc
+    augroup END
+endif
+
+" quick write
+nmap <leader>w :w<CR>
+nmap <leader>W :w!<CR>
+
+" shortcuts for appending local path
+map <leader>e :e <C-R>=expand("%:p:h") . "/"<CR>
+map <leader>te :tabe <C-R>=expand("%:p:h") . "/"<CR>
+" Inserts the path of the currently edited file into a command
+" Command mode: Ctrl+P
+cmap <C-P> <C-R>=expand("%:p:h") . "/" <CR>
+
+" change path across all windows
+nmap <leader>cd :cd%:p:h<CR>
+" change path locally
+nmap <leader>. :lcd%:p:h<CR>
+
+" new line
+nmap <CR> o<Esc>
+
+" view registers
+nmap <leader>r :registers<CR>
+
+" conque term
+map <leader>E :call StartTerm()<CR>
+
+
+" rst shortcuts
+" Press '@h' and the character you want to use for heading
+let @h = "yypVr"
+
+" remove search hilight
+nnoremap <leader><space> :nohlsearch<CR>
+
+" replace <ESC> functionality with easier to reach key cmds.
+inoremap jj <ESC>
+
+" I work mostly on a laptop, f1 gets in the ways sometimes.
+map <F1> <Esc>
+
+" Some sane shortcuts
+nmap F %
+nmap Y y$
+
+" tab for brackets
+nnoremap <tab> %
+vnoremap <tab> %
+
+" fill window with buffer
+map <leader>F <C-W>_
+map <C-k> <C-W>k
+map <C-j> <C-W>j
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Move selection up and down
+map <C-Down> ddp
+map <C-Up> dd<Up>P
+vmap <C-Down> xp`[V`]
+vmap <C-Up> x<Up>P`[V`]
+
+" mimic some common emacs keys
+imap <C-a> <C-o>0
+imap <C-e> <C-o>$
+map <C-e> $
+map <C-a> 0
+
+" If I forgot to sudo vim a file, do that with :w!!
+cmap w!! %!sudo tee > /dev/null %
+
+" tabs!
+map tn <Esc>:tabnext<cr>
+map tp <Esc>:tabprev<cr>
+map tc <Esc>:tabnew<cr>
+map td <Esc>:tabclose<cr>
+map tm <Esc>:tabmove<cr>
+
+
+if &t_Co > 2 || has('gui_running')
+    syntax on
+    set hlsearch
+endif
+
+if has('autocmd')
+    filetype plugin indent on
+
+    " Group these to make it easy to delete
+    augroup vimrcEx
+    au!
+    autocmd FileType text setlocal textwidth=78
+
+    " Jump to last known cursor position.
+    autocmd BufReadPost *
+        \ if line("'\"") > 1 && line("'\"") <= line("$") |
+        \   exe "normal! g`\"" |
+        \ end
+    augroup END
+else
+    set autoindent
+endif
+
+" Convenient command to see the difference between the current buffer and the
+" file it was loaded from.
+" Only define it when not defined already.
+if !exists(":DiffOrig")
+    command DiffOrig vert new | set bt=nofile | r # | 0d_ | diffthis
+        \ | wincmd p | diffthis
+endif
+
+" date shortcuts
+iab YMD <C-R>=strftime("%Y-%m-%d")<CR>
+iab NOW <C-R>=strftime("%c")<CR>
+
+" toggle between number and relative number on ,l
+if v:version >= 703
+    set relativenumber
+    nnoremap <leader>l :call ToggleRelativeAbsoluteNumber()<CR>
+else
+    set number
+endif
+
+function! ToggleRelativeAbsoluteNumber()
+  if &number
+    set relativenumber
+  else
+    set number
+  endif
+endfunction
+
+function! CurDir()
+    let curdir = getcwd()
+    return curdir
+endfunction
+
+function! GuiTabLabel()
+    " add the tab number
+    let label = '['.tabpagenr()
+    " modified since the last save?
+    let buflist = tabpagebuflist(v:lnum)
+    for bufnr in buflist
+            if getbufvar(bufnr, '&modified')
+                    let label .= '*'
+                    break
+            endif
+    endfor
+    " count number of open windows in the tab
+    let wincount = tabpagewinnr(v:lnum, '$')
+    if wincount > 1
+            let label .= ', '.wincount
+    endif
+    let label .= '] '
+    " add the file name without path information
+    let n = bufname(buflist[tabpagewinnr(v:lnum) - 1])
+    let label .= fnamemodify(n, ':t')
+    return label
+endfunction
+
+function! StripWhitespace ()
+    exec ':%s/ \+$//gc'
+endfunction
+map <leader>S :call StripWhitespace ()<CR>
+
+function! StartTerm()
+    ConqueTermTab zsh --login
+    setlocal listchars=tab:\ \
+endfunction
+
+function! Touch(file)
+    execute "!touch " . a:file
+    call s:UpdateNERDTree(1)
+endfunction
+
+nmap <C-S-P> :call <SID>SynStack()<CR>
+function! <SID>SynStack()
+    if !exists("*synstack")
+        return
+    endif
+    echo map(synstack(line('.'), col('.')), 'synIDattr(v:val, "name")')
+endfunction
+
+function! Browser()
+    let line0 = getline (".")
+    let line = matchstr (line0, "http[^ )]*")
+    let line = escape (line, "#?&;|%")
+    exec ':silent !open ' . "\"" . line . "\""
+endfunction
+map <leader>b :call Browser()<CR>
+
+if has("autocmd")
+    au BufRead,BufNewFile *.sql         setlocal ft=pgsql
+    au BufRead,BufNewFile *.md          setlocal ft=mkd tw=78 ts=2 sw=2 expandtab
+    au BufRead,BufNewFile *.markdown    setlocal ft=mkd tw=78 ts=2 sw=2 expandtab
+    au BufRead,BufNewFile *.rst         setlocal ft=rst tw=78 ts=4 sw=4 expandtab
+    au BufNewFile,BufRead *.csv         setlocal ft=csv
+    au BufRead,BufNewFile {Gemfile,Rakefile,Thorfile,config.ru}    set ft=ruby
+endif
+
+if has("autocmd")
+    au FileType html,css,ruby setlocal ts=2 sts=2 sw=2 expandtab
+    au FileType javascript setlocal ts=4 sts=4 sw=4 noexpandtab
+    au FileType gitcommit setlocal tw=60
+    au FileType make setlocal noexpandtab
+    au FileType 
+        \ perl setlocal makeprg=perl\ -c\ %\ $* errorformat=%f:%l:%m autowrite
+    au FileType python setlocal complete+=k~/.vim/syntax/python.vim "isk+=.,(
+    let html_no_rendering=1
+endif
