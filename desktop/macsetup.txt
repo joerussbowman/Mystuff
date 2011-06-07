@@ -1,0 +1,64 @@
+# Terminal Setup:
+# Finder -> Applications -> Utilities -> Terminal
+# With Terminal open it should be in the Dockbar
+# Right click in Dockbar
+# Options -> Keep in Dock
+
+# With Terminal open select Terminal -> Preferences in top menu bar
+# Shell Tab
+# Set When Shell Exits to Close the Window
+
+# Install Homebrew:
+# https://github.com/mxcl/homebrew
+ruby -e “$(curl -fsSL https://gist.github.com/raw/323731/install_homebrew.rb)”
+
+# Install Xcode
+# http://developer.apple.com/technologies/xcode.html
+# Register as developer if you haven’t already. No need to pay
+# but it’s a few GB so expect the download to take a while.
+
+# Install Git
+brew install git
+
+# Github setup:
+ssh-keygen
+# Log into Github
+# https://github.com/account
+# Add public key
+
+# Desktop setup:
+mkdir ~/git
+cd ~/git
+git clone https://github.com/joerussbowman/Mystuff.git
+cd Mystuff/desktop
+mv vimrc ~/.vimrc
+mv gitignore ~/.gitignore
+
+# At this point I generally remove most items from the dock
+# leaving Terminal, Mail, and Safari
+
+# Install Chrome
+# http://www.google.com/chrome/intl/en/landing_chrome_mac.html?hl=en&platform=mac
+
+# This is base system install, now customize for specific use cases.
+
+# Get home, end, page-up and page-down working in Terminal
+# source: http://discussions.apple.com/thread.jspa?threadID=1596483
+
+- Open Terminal
+- Open Terminal’s Preferences
+- Select the style you have set as default (or the style you wish to change the key mappings in.)
+- Select the Keyboard “tab”
+- Select the “end” key from the list
+- Click the “Edit” button under the list
+- Change the “Action” from “scroll to end of buffer” to “send string to shell:”
+- There’s a text field under the drop-down you just changed. This field is where the keycode for the end key needs to be entered.
+- The following are the keycodes you’ll need to know:
+- End Key: \033[4~
+- Home Key: \033[1~
+- Pg. Down: \033[6~
+- Pg. Up: \033[5~
+
+- To get the \033 portion of the key code, you need to hit the Esc key when the text field has focus, then just type the rest of the key code in as displayed. Note that the Delete key will enter its own key code into the field. To delete a mistyped character, click the “Delete one character” button just below the text field.
+- Do the same for the Home, Pg. Down and Pg. Up keys. 
+- Open a new terminal window and your keys should work as expected.
