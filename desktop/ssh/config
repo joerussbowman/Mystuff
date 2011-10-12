@@ -11,5 +11,4 @@ Compression yes
 Ciphers blowfish-cbc,aes128-cbc,3des-cbc,cast128-cbc,arcfour,aes192-cbc,aes256-cbc
 # Global defaults for hosts
 Host *
-    ForwardAgent yes 
     ForwardX11 yes 
