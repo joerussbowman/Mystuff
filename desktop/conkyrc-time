@@ -1,0 +1,35 @@
+background yes
+use_xft yes
+xftfont 123:size=8
+xftalpha 0.1
+update_interval 0.5
+total_run_times 0
+own_window yes
+own_window_type override
+own_window_transparent yes
+own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
+double_buffer yes
+minimum_size 250 5
+maximum_width 400
+draw_shades no
+draw_outline no
+draw_borders no
+draw_graph_borders yes
+default_color Dark Gray
+default_shade_color red
+default_outline_color green
+alignment top_middle
+gap_x 0
+gap_y 30
+no_buffers yes
+uppercase no
+cpu_avg_samples 2
+net_avg_samples 1
+override_utf8_locale no
+use_spacer yes
+
+TEXT
+${font Ubuntu:bold:size=20}${color White} ${time %A} ${time %B} ${time %d}, ${time %Y}
+${font Ubuntu:bold:size=40}${alignc}${time %l}:${time %M} ${time %p}
+${font Ubuntu:bold:size=15}${execpi 30 /home/jbowman/.conky/weather.py | grep -v Yahoo | grep -v "Weather Chann"}
+

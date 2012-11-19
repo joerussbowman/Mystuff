@@ -34,7 +34,7 @@ Kernel $kernel
 Uptime $uptime
 ${font Ubuntu:bold:size=10}${color Linen}PROCESSORS${color Dark Gray}${hr 2}$font$color
 Load $loadavg
-${color White}${cpugraph cpu0}$color
+${color White}${cpugraph cpu0 444444 ffffff -t}$color
 CPU1: ${color White}${cpubar cpu1}$color
 CPU2: ${color White}${cpubar cpu2}$color
 CPU3: ${color White}${cpubar cpu3}$color
@@ -55,12 +55,14 @@ ${font Ubuntu:bold:size=10}${color Linen}BATTERY${color Dark Gray}${hr 2}$font$c
 $battery_short $battery_time ${color White}${battery_bar}$color
 ${font Ubuntu:bold:size=10}${color Linen}NETWORKING${color Dark Gray}${hr 2}$font$color
 wlan0 Down${goto 100}${downspeed wlan0}
-${color White}${downspeedgraph wlan0}$color
+${color White}${downspeedgraph wlan0 444444 ffffff -t}$color
 wlan0 Up${goto 100}${upspeed wlan0}
-${color White}${upspeedgraph wlan0}$color
+${color White}${upspeedgraph wlan0 444444 ffffff -t}$color
 ${font Ubuntu:bold:size=10}${color Linen}FILESYSTEM${color Dark Gray}${hr 2}$font$color
 ${fs_used /}/${fs_size} ${color White}${fs_bar /}$color
-${font Ubuntu:bold:size=10}${color Linen}EMAIL${color Dark Gray}${hr 2}$font$color
-Work${goto 100}${execpi 30 cat /tmp/testUnread}
-${font Ubuntu:bold:size=10}${color Linen}FACEBOOK${color Dark Gray}${hr 2}$font$color
-${execpi 30 /home/jbowman/.conky/facebook.sh | awk 'BEGIN {FS="\["} {print $3;}' | awk 'BEGIN {FS="\]"} {print $1}'}
+Disk Read${goto 100}${diskio_read /dev/sda1}
+${diskiograph_read /dev/sda1 444444 ffffff -t}
+Disk Write${goto 100}${diskio_write /dev/sda1}
+${diskiograph_write /dev/sda1 444444 ffffff -t}
+${font Ubuntu:bold:size=10}${color Linen}SYSLOG${color Dark Gray}${hr 2}$font$color
+${tail /var/log/syslog 8}
