@@ -25,7 +25,7 @@ no_buffers yes
 uppercase no
 cpu_avg_samples 2
 net_avg_samples 1
-override_utf8_locale no
+override_utf8_locale yes
 use_spacer yes
 
 TEXT
@@ -33,6 +33,7 @@ ${font Ubuntu:bold:size=10}${color Linen}SYSTEM${color Dark Gray}${hr 2}$font$co
 Kernel $kernel 
 Uptime $uptime
 ${font Ubuntu:bold:size=10}${color Linen}PROCESSORS${color Dark Gray}${hr 2}$font$color
+${execpi 1 sensors -f | grep Core}
 Load $loadavg
 ${color White}${cpugraph cpu0 444444 ffffff -t}$color
 CPU1: ${color White}${cpubar cpu1}$color
@@ -65,4 +66,4 @@ ${diskiograph_read /dev/sda1 444444 ffffff -t}
 Disk Write${goto 100}${diskio_write /dev/sda1}
 ${diskiograph_write /dev/sda1 444444 ffffff -t}
 ${font Ubuntu:bold:size=10}${color Linen}SYSLOG${color Dark Gray}${hr 2}$font$color
-${tail /var/log/syslog 8}
+${tail /var/log/syslog 7}
